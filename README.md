@@ -1,55 +1,57 @@
-# Web Technologies Practicals & Assignments
+# Web Technologies Practicals and Assignments
 
-> **Repository**: `webtechnologies-assignments`  
-> **Course**: Web Technologies (B.Tech Computer Engineering)  
+**Repository**: `webtechnologies-assignments`  
+**Course**: Web Technologies (B.Tech Computer Engineering)  
 
-This repository contains practical assignments developed using modern web technologies including PHP, Bootstrap, jQuery, React, Vite, and AI-assisted development tools.
+This repository contains practical assignments developed using modern web technologies including PHP 8, Bootstrap 5, jQuery, React 19, Vite, and Web Audio API.
 
 ---
 
-## 📚 Table of Practicals
+## Project Overview
 
-| Practical # | Title & Description | Stack | Directory |
+![Project Overview](./docs/assests/ass2.png)
+
+---
+
+## Table of Practicals
+
+| Practical | Title & Description | Stack | Directory |
 |---|---|---|---|
-| **Practical 1** | **Responsive PHP Electricity Bill Calculator**<br>Calculates multi-slab tariff bills (0-50 @ ₹3.50, 51-150 @ ₹4.00, 151-250 @ ₹5.20, >250 @ ₹6.50), appliance consumption estimator, AJAX execution, and ChatGPT prompt engineering. | PHP 8, Bootstrap 5, jQuery | [`Assignment1_ElectricityBill/`](./Assignment1_ElectricityBill) |
-| **Practical 2** | **Advanced Real-Time World Clock Dashboard**<br>Combines Analog Clock (sweeping/ticking), Digital Clock (12h/24h), Time Zone Management, Alarm System with Web Audio API, Stopwatch & Countdown Timer, and Theme Customization. | React 19, Vite, SVG, Web Audio | [`Assignment2_ClockDashboard/`](./Assignment2_ClockDashboard) |
+| **Practical 1** | **Responsive PHP Electricity Bill Calculator**<br>Calculates multi-slab tariff bills, appliance consumption estimates, AJAX calculations, and printable statements. | PHP 8, Bootstrap 5, jQuery | [`Assignment1_ElectricityBill/`](./Assignment1_ElectricityBill) |
+| **Practical 2** | **TimeSpot: Real-Time World Clock Dashboard**<br>Combines 60 FPS sweeping analog clock, 12h/24h digital clock, global timezone management, multi-alarm system, countdown timer, and theme customization. | React 19, Vite, SVG, Web Audio API | [`Assignment2_ClockDashboard/`](./Assignment2_ClockDashboard) |
 
 ---
 
-## 🚀 Quick Start & Execution
+## Quick Start & Local Execution
 
-### ⚡ Running Practical 1 (PHP Electricity Bill Calculator)
+### Running Practical 1 (PHP Electricity Bill Calculator)
+
 ```bash
-# Navigate to Practical 1 folder
 cd Assignment1_ElectricityBill
-
-# Start local PHP server
 php -S localhost:8000
 ```
-Open browser at: `http://localhost:8000`
+Open browser at `http://localhost:8000`
 
 ---
 
-### ⏱️ Running Practical 2 (React Real-Time Clock Dashboard)
+### Running Practical 2 (React Real-Time World Clock Dashboard)
+
 ```bash
-# Navigate to Practical 2 folder
 cd Assignment2_ClockDashboard
-
-# Install node dependencies
 npm install
-
-# Start Vite dev server
 npm run dev
 ```
-Open browser at: `http://localhost:5173`
+Open browser at `http://localhost:5173`
 
 ---
 
-## 📑 Detailed Documentation & Lab Reports
-- 📄 [Practical 1 Lab Report & Documentation](./Assignment1_ElectricityBill/DOCUMENTATION.md)
-- 📄 [Practical 2 Lab Report & Documentation](./Assignment2_ClockDashboard/DOCUMENTATION.md)
+## Detailed Documentation & Reports
+
+- [Practical 1 Documentation](./Assignment1_ElectricityBill/DOCUMENTATION.md)
+- [Practical 2 Documentation](./Assignment2_ClockDashboard/DOCUMENTATION.md)
 
 ---
 
-## 📜 License & Academic Integrity
+## License & Academic Integrity
+
 Prepared for **Web Technologies Practical Assessment**.
