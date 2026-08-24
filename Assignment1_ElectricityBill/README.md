@@ -1,14 +1,21 @@
 # Practical 1: Responsive PHP Electricity Bill Calculator
 
 **Course**: Web Technologies  
-**Tech Stack**: PHP 8+, HTML5, CSS3 (Glassmorphism), Bootstrap 5.3, jQuery 3.7  
-**Design Strategy**: Responsive AI-Assisted UI / ChatGPT Code Generation  
+**Tech Stack**: PHP 8+, HTML5, CSS3 (Inter Minimalist Theme), Bootstrap 5.3, jQuery 3.7  
+
+---
+
+## Project Overview
+
+![Electricity Bill Calculator Interface](../docs/assests/ass1.png)
+
+![Electricity Bill Statement Invoice](../docs/assests/ass1-2.png)
 
 ---
 
 ## Problem Statement & Requirements
 
-Design and develop a responsive website with the help of code generation AI tools to calculate electricity bills using **PHP**.
+Design and develop a responsive website to calculate electricity bills using **PHP**.
 
 ### Tariff Slab Structure
 
@@ -30,15 +37,8 @@ Design and develop a responsive website with the help of code generation AI tool
    - Active slab cards highlight dynamically based on current unit range.
    - Animated progress bar showing cost distribution percentages across slabs.
 
-3. **Appliance Consumption Estimator**:
-   - Calculate estimated monthly kWh consumption by entering household devices, power ratings (Watts), quantity, and daily operating hours.
-   - One-click load into the main bill calculator.
-
-4. **Printable Invoice & PDF Generator**:
+3. **Printable Statement Invoice**:
    - Official utility statement modal with itemized tariff table, metadata, and CSS `@media print` optimized layout.
-
-5. **Calculation History**:
-   - Remembers past 10 bill estimates using browser `localStorage`.
 
 ---
 
@@ -48,9 +48,9 @@ Design and develop a responsive website with the help of code generation AI tool
 Assignment1_ElectricityBill/
 ├── assets/
 │   ├── css/
-│   │   └── style.css       # Custom glassmorphic styles & CSS variables
+│   │   └── style.css       # Minimalist Inter font styles & high-contrast theme
 │   └── js/
-│       └── app.js          # jQuery live sync, AJAX, estimator, & print handlers
+│       └── app.js          # jQuery live sync, AJAX calculation, & modal handlers
 ├── calculate.php           # PHP backend tariff calculation engine & AJAX API
 ├── index.php               # Main responsive web interface
 ├── README.md               # Quick setup guide & summary

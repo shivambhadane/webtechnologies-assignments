@@ -7,9 +7,17 @@ This repository contains practical assignments developed using modern web techno
 
 ---
 
-## Project Overview
+## Project Overview & Screenshots
 
-![Project Overview](./docs/assests/ass2.png)
+### Practical 1: PHP Electricity Bill Calculator
+
+![Assignment 1 Calculator Interface](./docs/assests/ass1.png)
+
+![Assignment 1 Statement Invoice](./docs/assests/ass1-2.png)
+
+### Practical 2: TimeSpot Real-Time World Clock Dashboard
+
+![Assignment 2 World Clock Dashboard](./docs/assests/ass2.png)
 
 ---
 
@@ -17,7 +25,7 @@ This repository contains practical assignments developed using modern web techno
 
 | Practical | Title & Description | Stack | Directory |
 |---|---|---|---|
-| **Practical 1** | **Responsive PHP Electricity Bill Calculator**<br>Calculates multi-slab tariff bills, appliance consumption estimates, AJAX calculations, and printable statements. | PHP 8, Bootstrap 5, jQuery | [`Assignment1_ElectricityBill/`](./Assignment1_ElectricityBill) |
+| **Practical 1** | **Responsive PHP Electricity Bill Calculator**<br>Calculates multi-slab tariff bills, live input synchronization, AJAX calculations, and printable invoices. | PHP 8, Bootstrap 5, jQuery | [`Assignment1_ElectricityBill/`](./Assignment1_ElectricityBill) |
 | **Practical 2** | **TimeSpot: Real-Time World Clock Dashboard**<br>Combines 60 FPS sweeping analog clock, 12h/24h digital clock, global timezone management, multi-alarm system, countdown timer, and theme customization. | React 19, Vite, SVG, Web Audio API | [`Assignment2_ClockDashboard/`](./Assignment2_ClockDashboard) |
 
 ---

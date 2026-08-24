@@ -6,6 +6,12 @@
 
 ---
 
+## Project Overview
+
+![TimeSpot World Clock Dashboard](../docs/assests/ass2.png)
+
+---
+
 ## Problem Statement & Objectives
 
 Build an advanced real-time clock dashboard application using **React** that combines:
