@@ -11,13 +11,13 @@ This repository contains practical assignments developed using modern web techno
 
 ### Practical 1: PHP Electricity Bill Calculator
 
-![Assignment 1 Calculator Interface](./docs/assests/ass1.png)
+![Assignment 1 Calculator Interface](./docs/assets/ass1.png)
 
-![Assignment 1 Statement Invoice](./docs/assests/ass1-2.png)
+![Assignment 1 Statement Invoice](./docs/assets/ass1-2.png)
 
 ### Practical 2: TimeSpot Real-Time World Clock Dashboard
 
-![Assignment 2 World Clock Dashboard](./docs/assests/ass2.png)
+![Assignment 2 World Clock Dashboard](./docs/assets/ass2.png)
 
 ---
 

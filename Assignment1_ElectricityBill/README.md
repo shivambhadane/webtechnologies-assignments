@@ -7,9 +7,9 @@
 
 ## Project Overview
 
-![Electricity Bill Calculator Interface](../docs/assests/ass1.png)
+![Electricity Bill Calculator Interface](../docs/assets/ass1.png)
 
-![Electricity Bill Statement Invoice](../docs/assests/ass1-2.png)
+![Electricity Bill Statement Invoice](../docs/assets/ass1-2.png)
 
 ---
 

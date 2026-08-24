@@ -8,7 +8,7 @@
 
 ## Project Overview
 
-![TimeSpot World Clock Dashboard](../docs/assests/ass2.png)
+![TimeSpot World Clock Dashboard](../docs/assets/ass2.png)
 
 ---
 
