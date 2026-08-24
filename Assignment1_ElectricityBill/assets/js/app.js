@@ -19,9 +19,6 @@ $(document).ready(function () {
     const $calcForm = $('#billCalcForm');
     const $themeToggle = $('#themeToggle');
 
-    // History array stored in LocalStorage
-    let billHistory = JSON.parse(localStorage.getItem('powercalc_history') || '[]');
-
     // ----------------------------------------------------
     // 1. Client-Side Real-Time Math & UI Sync
     // ----------------------------------------------------
@@ -73,16 +70,9 @@ $(document).ready(function () {
         $('#dispGovTax').text('₹' + data.govTax.toFixed(2));
 
         // Update Slabs UI
-        $('#s1Units').text(data.s1.units.toFixed(1));
         $('#s1Cost').text('₹' + data.s1.cost.toFixed(2));
-
-        $('#s2Units').text(data.s2.units.toFixed(1));
         $('#s2Cost').text('₹' + data.s2.cost.toFixed(2));
-
-        $('#s3Units').text(data.s3.units.toFixed(1));
         $('#s3Cost').text('₹' + data.s3.cost.toFixed(2));
-
-        $('#s4Units').text(data.s4.units.toFixed(1));
         $('#s4Cost').text('₹' + data.s4.cost.toFixed(2));
 
         // Highlight Active Slab
@@ -134,23 +124,21 @@ $(document).ready(function () {
             },
             dataType: 'json',
             beforeSend: function () {
-                $('#btnCalculate').text('[ CALCULATING... ]').prop('disabled', true);
+                $('#btnCalculate').text('CALCULATING...').prop('disabled', true);
             },
             success: function (response) {
-                $('#btnCalculate').text('[ CALCULATE BILL (PHP / AJAX) ]').prop('disabled', false);
+                $('#btnCalculate').text('CALCULATE BILL').prop('disabled', false);
 
                 if (response.status === 'success') {
                     const data = response.data;
                     renderInvoiceModal(consumerName, consumerNo, billingMonth, data);
-                    saveToHistory(consumerName, consumerNo, billingMonth, data.units, data.grandTotal);
                 }
             },
             error: function () {
-                $('#btnCalculate').text('[ CALCULATE BILL (PHP / AJAX) ]').prop('disabled', false);
+                $('#btnCalculate').text('CALCULATE BILL').prop('disabled', false);
                 // Fallback client-side rendering
                 const clientData = calculateBillMath(units);
                 renderInvoiceModal(consumerName, consumerNo, billingMonth, clientData);
-                saveToHistory(consumerName, consumerNo, billingMonth, clientData.units, clientData.grandTotal);
             }
         });
     });
@@ -210,115 +198,15 @@ $(document).ready(function () {
     });
 
     // ----------------------------------------------------
-    // 4. Appliance Estimator Logic
-    // ----------------------------------------------------
-    $(document).on('input change', '.appliance-row input', function () {
-        calculateApplianceTotal();
-    });
-
-    $('#btnAddAppliance').on('click', function () {
-        const newRowHtml = `
-            <tr class="appliance-row">
-                <td><input type="text" class="form-control-minimal app-name" value="Custom Device"></td>
-                <td><input type="number" class="form-control-minimal app-watts" value="100" min="1"></td>
-                <td><input type="number" class="form-control-minimal app-qty" value="1" min="1"></td>
-                <td><input type="number" class="form-control-minimal app-hours" value="5" min="0" max="24"></td>
-                <td class="text-end fw-bold app-units">15.0</td>
-                <td class="text-center"><button class="btn-minimal btn-minimal-outline py-1 px-2 btn-remove-app">[X]</button></td>
-            </tr>
-        `;
-        $('#applianceTableBody').append(newRowHtml);
-        calculateApplianceTotal();
-    });
-
-    $(document).on('click', '.btn-remove-app', function () {
-        $(this).closest('tr').remove();
-        calculateApplianceTotal();
-    });
-
-    function calculateApplianceTotal() {
-        let totalMonthlyUnits = 0;
-        $('.appliance-row').each(function () {
-            const watts = parseFloat($(this).find('.app-watts').val()) || 0;
-            const qty = parseFloat($(this).find('.app-qty').val()) || 0;
-            const hours = parseFloat($(this).find('.app-hours').val()) || 0;
-
-            const dailyKwh = (watts * qty * hours) / 1000;
-            const monthlyKwh = dailyKwh * 30;
-
-            $(this).find('.app-units').text(monthlyKwh.toFixed(1));
-            totalMonthlyUnits += monthlyKwh;
-        });
-
-        $('#estimatedApplianceUnits').text(Math.round(totalMonthlyUnits));
-    }
-
-    $('#btnApplyEstimatedUnits').on('click', function () {
-        const units = Math.round(parseFloat($('#estimatedApplianceUnits').text()) || 0);
-        $unitsInput.val(units).trigger('change');
-        // Switch to Calculator tab
-        const calcTab = new bootstrap.Tab(document.getElementById('pills-calculator-tab'));
-        calcTab.show();
-    });
-
-    // ----------------------------------------------------
-    // 5. History & LocalStorage
-    // ----------------------------------------------------
-    function saveToHistory(name, accNo, month, units, amount) {
-        const entry = {
-            id: Date.now(),
-            name: name,
-            accNo: accNo,
-            month: month,
-            units: units,
-            amount: amount,
-            date: new Date().toLocaleDateString()
-        };
-        billHistory.unshift(entry);
-        if (billHistory.length > 10) billHistory.pop();
-        localStorage.setItem('powercalc_history', JSON.stringify(billHistory));
-        renderHistoryTable();
-    }
-
-    function renderHistoryTable() {
-        if (billHistory.length === 0) {
-            $('#historyTableBody').html('<tr><td colspan="5" class="text-center text-muted py-4">[ NO CALCULATION HISTORY RECORDED ]</td></tr>');
-            return;
-        }
-
-        let html = '';
-        billHistory.forEach(item => {
-            html += `
-                <tr>
-                    <td>[${item.date}]</td>
-                    <td><strong>${item.name}</strong> <br><small class="text-muted">[#${item.accNo}]</small></td>
-                    <td>${item.month}</td>
-                    <td>${item.units} KWH</td>
-                    <td class="text-end fw-bold">₹${item.amount.toFixed(2)}</td>
-                </tr>
-            `;
-        });
-        $('#historyTableBody').html(html);
-    }
-
-    $('#btnClearHistory').on('click', function () {
-        billHistory = [];
-        localStorage.removeItem('powercalc_history');
-        renderHistoryTable();
-    });
-
-    // ----------------------------------------------------
-    // 6. Theme Toggle
+    // 4. Theme Toggle
     // ----------------------------------------------------
     $themeToggle.on('click', function () {
         const currentTheme = $('html').attr('data-theme') || 'dark';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         $('html').attr('data-theme', newTheme);
-        $(this).text(newTheme === 'dark' ? '[THEME MODE]' : '[LIGHT MODE]');
+        $(this).text(newTheme === 'dark' ? 'THEME' : 'LIGHT MODE');
     });
 
     // Initializations
     updateLiveUI($unitsInput.val());
-    calculateApplianceTotal();
-    renderHistoryTable();
 });

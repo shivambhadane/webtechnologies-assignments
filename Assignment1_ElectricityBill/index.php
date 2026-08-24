@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['units'])) {
         <div class="container d-flex justify-content-between align-items-center">
             <div>
                 <h1 class="brand-title">POWER BOARD</h1>
-                <div class="bracket-tag mt-1">ELECTRICITY BILL CALCULATOR & UTILITY INVOICE</div>
+                <div class="bracket-tag mt-1">ELECTRICITY BILL CALCULATOR</div>
             </div>
             <div>
                 <button id="themeToggle" class="btn-minimal btn-minimal-outline">
@@ -68,303 +68,193 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['units'])) {
     <!-- Main Container -->
     <div class="container mt-4">
 
-        <!-- Navigation Tabs -->
-        <ul class="nav nav-tabs-minimal" id="mainTabs" role="tablist">
-            <li class="nav-item">
-                <button class="nav-link active" id="pills-calculator-tab" data-bs-toggle="tab" data-bs-target="#pills-calculator" type="button" role="tab">
-                    BILL CALCULATOR
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" id="pills-tariffs-tab" data-bs-toggle="tab" data-bs-target="#pills-tariffs" type="button" role="tab">
-                    TARIFF SCHEDULE
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" id="pills-estimator-tab" data-bs-toggle="tab" data-bs-target="#pills-estimator" type="button" role="tab">
-                    APPLIANCE ESTIMATOR
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" id="pills-history-tab" data-bs-toggle="tab" data-bs-target="#pills-history" type="button" role="tab">
-                    HISTORY
-                </button>
-            </li>
-        </ul>
+        <div class="row g-4">
 
-        <!-- Tab Contents -->
-        <div class="tab-content" id="mainTabsContent">
+            <!-- Left Input Column -->
+            <div class="col-lg-6">
+                <div class="minimal-card">
+                    <div class="bracket-tag mb-3">CONSUMER DETAILS & INPUTS</div>
 
-            <!-- TAB 1: BILL CALCULATOR -->
-            <div class="tab-pane fade show active" id="pills-calculator" role="tabpanel">
-                <div class="row g-4">
-
-                    <!-- Left Input Column -->
-                    <div class="col-lg-6">
-                        <div class="minimal-card">
-                            <div class="bracket-tag mb-3">CONSUMER METADATA & INPUTS</div>
-
-                            <form id="billCalcForm" action="index.php" method="POST">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label-minimal">CONSUMER NAME</label>
-                                        <input type="text" class="form-control-minimal" id="consumerName" name="consumerName" value="<?php echo htmlspecialchars($inputConsumerName); ?>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label-minimal">ACCOUNT / METER ID</label>
-                                        <input type="text" class="form-control-minimal" id="consumerNo" name="consumerNo" value="<?php echo htmlspecialchars($inputConsumerNo); ?>" required>
-                                    </div>
-                                </div>
-
-                                <div class="row g-3 mt-1">
-                                    <div class="col-md-6">
-                                        <label class="form-label-minimal">BILLING PERIOD</label>
-                                        <input type="month" class="form-control-minimal" id="billingMonth" name="billingMonth" value="<?php echo date('Y-m'); ?>">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label-minimal">CATEGORY</label>
-                                        <select class="form-select-minimal" id="connectionType">
-                                            <option value="residential" selected>DOMESTIC / RESIDENTIAL</option>
-                                            <option value="commercial">COMMERCIAL / GENERAL</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Units Slider Box -->
-                                <div class="mt-4 p-3 border border-secondary">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <label class="form-label-minimal mb-0">CONSUMED ELECTRICITY UNITS (KWH)</label>
-                                    </div>
-
-                                    <div class="input-group mb-3">
-                                        <input type="number" class="form-control-minimal fs-3 fw-bold font-monospace" id="unitsInput" name="units" min="0" max="2000" step="1" value="<?php echo $inputUnits; ?>" required>
-                                    </div>
-
-                                    <input type="range" class="minimal-range" id="unitsRange" min="0" max="1000" step="5" value="<?php echo $inputUnits; ?>">
-
-                                    <div class="d-flex justify-content-between bracket-tag mt-2">
-                                        <span>0 UNITS</span>
-                                        <span>250 UNITS</span>
-                                        <span>500 UNITS</span>
-                                        <span>1000+ UNITS</span>
-                                    </div>
-                                </div>
-
-                                <div class="mt-4">
-                                    <button type="submit" id="btnCalculate" class="btn-minimal w-100 py-3">
-                                        CALCULATE BILL
-                                    </button>
-                                </div>
-                            </form>
+                    <form id="billCalcForm" action="index.php" method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label-minimal">CONSUMER NAME</label>
+                                <input type="text" class="form-control-minimal" id="consumerName" name="consumerName" value="<?php echo htmlspecialchars($inputConsumerName); ?>" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label-minimal">ACCOUNT / METER ID</label>
+                                <input type="text" class="form-control-minimal" id="consumerNo" name="consumerNo" value="<?php echo htmlspecialchars($inputConsumerNo); ?>" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Right Calculation Result Column -->
-                    <div class="col-lg-6">
-                        <div class="minimal-card d-flex flex-column justify-content-between">
-                            <div>
-                                <!-- Total Spotlight Banner -->
-                                <div class="grand-banner">
-                                    <div class="grand-label">ESTIMATED GRAND TOTAL</div>
-                                    <div class="grand-value" id="dispGrandTotal">
-                                        ₹<?php echo number_format($serverResult['grandTotal'], 2); ?>
-                                    </div>
-                                    <div class="bracket-tag mt-2">
-                                        ENERGY: <span id="dispEnergyCharges" class="text-white fw-bold">₹<?php echo number_format($serverResult['totalEnergyCharges'], 2); ?></span> | 
-                                        FIXED: <span id="dispFixedCharge" class="text-white fw-bold">₹<?php echo number_format($serverResult['fixedCharge'], 2); ?></span> | 
-                                        DUTY (5%): <span id="dispGovTax" class="text-white fw-bold">₹<?php echo number_format($serverResult['govTax'], 2); ?></span>
-                                    </div>
-                                </div>
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-6">
+                                <label class="form-label-minimal">BILLING PERIOD</label>
+                                <input type="month" class="form-control-minimal" id="billingMonth" name="billingMonth" value="<?php echo date('Y-m'); ?>">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label-minimal">CATEGORY</label>
+                                <select class="form-select-minimal" id="connectionType">
+                                    <option value="residential" selected>DOMESTIC / RESIDENTIAL</option>
+                                    <option value="commercial">COMMERCIAL / GENERAL</option>
+                                </select>
+                            </div>
+                        </div>
 
-                                <!-- Progress Bar -->
-                                <div class="mb-4">
-                                    <div class="d-flex justify-content-between bracket-tag mb-1">
-                                        <span>SLAB CONTRIBUTION BREAKDOWN</span>
-                                        <span><span id="liveUnitsDisplay"><?php echo $serverResult['units']; ?></span> KWH TOTAL</span>
-                                    </div>
-                                    <div class="progress-minimal-container">
-                                        <div id="barSlab1" class="progress-minimal-bar bg-success" style="width: <?php echo $serverResult['slabs']['slab1']['percentage']; ?>%;"></div>
-                                        <div id="barSlab2" class="progress-minimal-bar bg-primary" style="width: <?php echo $serverResult['slabs']['slab2']['percentage']; ?>%;"></div>
-                                        <div id="barSlab3" class="progress-minimal-bar bg-warning" style="width: <?php echo $serverResult['slabs']['slab3']['percentage']; ?>%;"></div>
-                                        <div id="barSlab4" class="progress-minimal-bar bg-danger" style="width: <?php echo $serverResult['slabs']['slab4']['percentage']; ?>%;"></div>
-                                    </div>
-                                </div>
-
-                                <!-- Slab Cards Grid -->
-                                <div class="slab-grid mb-4">
-                                    <!-- Slab 1 -->
-                                    <div class="slab-box <?php echo ($serverResult['activeSlab'] == 1 && $serverResult['units'] > 0) ? 'active-slab' : ''; ?>" id="slabCard1">
-                                        <div class="slab-box-title">SLAB 1 (0-50)</div>
-                                        <div class="slab-box-rate">₹3.50/u</div>
-                                        <div class="slab-box-cost" id="s1Cost">₹<?php echo number_format($serverResult['slabs']['slab1']['cost'], 2); ?></div>
-                                    </div>
-
-                                    <!-- Slab 2 -->
-                                    <div class="slab-box <?php echo ($serverResult['activeSlab'] == 2) ? 'active-slab' : ''; ?>" id="slabCard2">
-                                        <div class="slab-box-title">SLAB 2 (51-150)</div>
-                                        <div class="slab-box-rate">₹4.00/u</div>
-                                        <div class="slab-box-cost" id="s2Cost">₹<?php echo number_format($serverResult['slabs']['slab2']['cost'], 2); ?></div>
-                                    </div>
-
-                                    <!-- Slab 3 -->
-                                    <div class="slab-box <?php echo ($serverResult['activeSlab'] == 3) ? 'active-slab' : ''; ?>" id="slabCard3">
-                                        <div class="slab-box-title">SLAB 3 (151-250)</div>
-                                        <div class="slab-box-rate">₹5.20/u</div>
-                                        <div class="slab-box-cost" id="s3Cost">₹<?php echo number_format($serverResult['slabs']['slab3']['cost'], 2); ?></div>
-                                    </div>
-
-                                    <!-- Slab 4 -->
-                                    <div class="slab-box <?php echo ($serverResult['activeSlab'] == 4) ? 'active-slab' : ''; ?>" id="slabCard4">
-                                        <div class="slab-box-title">SLAB 4 (>250)</div>
-                                        <div class="slab-box-rate">₹6.50/u</div>
-                                        <div class="slab-box-cost" id="s4Cost">₹<?php echo number_format($serverResult['slabs']['slab4']['cost'], 2); ?></div>
-                                    </div>
-                                </div>
+                        <!-- Units Slider Box -->
+                        <div class="mt-4 p-3 border border-secondary">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="form-label-minimal mb-0">CONSUMED UNITS (KWH)</label>
                             </div>
 
-                            <div class="pt-3 border-top border-secondary">
-                                <button class="btn-minimal btn-minimal-outline w-100" data-bs-toggle="modal" data-bs-target="#invoiceModal">
-                                    VIEW INVOICE STATEMENT / PRINT
-                                </button>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control-minimal fs-3 fw-bold font-monospace" id="unitsInput" name="units" min="0" max="2000" step="1" value="<?php echo $inputUnits; ?>" required>
+                            </div>
+
+                            <input type="range" class="minimal-range" id="unitsRange" min="0" max="1000" step="5" value="<?php echo $inputUnits; ?>">
+
+                            <div class="d-flex justify-content-between bracket-tag mt-2">
+                                <span>0 UNITS</span>
+                                <span>250 UNITS</span>
+                                <span>500 UNITS</span>
+                                <span>1000+ UNITS</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" id="btnCalculate" class="btn-minimal w-100 py-3">
+                                CALCULATE BILL
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Calculation Result Column -->
+            <div class="col-lg-6">
+                <div class="minimal-card d-flex flex-column justify-content-between">
+                    <div>
+                        <!-- Total Spotlight Banner -->
+                        <div class="grand-banner">
+                            <div class="grand-label">ESTIMATED GRAND TOTAL</div>
+                            <div class="grand-value" id="dispGrandTotal">
+                                ₹<?php echo number_format($serverResult['grandTotal'], 2); ?>
+                            </div>
+                            <div class="bracket-tag mt-2">
+                                ENERGY: <span id="dispEnergyCharges" class="text-white fw-bold">₹<?php echo number_format($serverResult['totalEnergyCharges'], 2); ?></span> | 
+                                FIXED: <span id="dispFixedCharge" class="text-white fw-bold">₹<?php echo number_format($serverResult['fixedCharge'], 2); ?></span> | 
+                                DUTY (5%): <span id="dispGovTax" class="text-white fw-bold">₹<?php echo number_format($serverResult['govTax'], 2); ?></span>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between bracket-tag mb-1">
+                                <span>SLAB CONTRIBUTION BREAKDOWN</span>
+                                <span><span id="liveUnitsDisplay"><?php echo $serverResult['units']; ?></span> KWH TOTAL</span>
+                            </div>
+                            <div class="progress-minimal-container">
+                                <div id="barSlab1" class="progress-minimal-bar bg-success" style="width: <?php echo $serverResult['slabs']['slab1']['percentage']; ?>%;"></div>
+                                <div id="barSlab2" class="progress-minimal-bar bg-primary" style="width: <?php echo $serverResult['slabs']['slab2']['percentage']; ?>%;"></div>
+                                <div id="barSlab3" class="progress-minimal-bar bg-warning" style="width: <?php echo $serverResult['slabs']['slab3']['percentage']; ?>%;"></div>
+                                <div id="barSlab4" class="progress-minimal-bar bg-danger" style="width: <?php echo $serverResult['slabs']['slab4']['percentage']; ?>%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Slab Cards Grid -->
+                        <div class="slab-grid mb-4">
+                            <!-- Slab 1 -->
+                            <div class="slab-box <?php echo ($serverResult['activeSlab'] == 1 && $serverResult['units'] > 0) ? 'active-slab' : ''; ?>" id="slabCard1">
+                                <div class="slab-box-title">SLAB 1 (0-50)</div>
+                                <div class="slab-box-rate">₹3.50/u</div>
+                                <div class="slab-box-cost" id="s1Cost">₹<?php echo number_format($serverResult['slabs']['slab1']['cost'], 2); ?></div>
+                            </div>
+
+                            <!-- Slab 2 -->
+                            <div class="slab-box <?php echo ($serverResult['activeSlab'] == 2) ? 'active-slab' : ''; ?>" id="slabCard2">
+                                <div class="slab-box-title">SLAB 2 (51-150)</div>
+                                <div class="slab-box-rate">₹4.00/u</div>
+                                <div class="slab-box-cost" id="s2Cost">₹<?php echo number_format($serverResult['slabs']['slab2']['cost'], 2); ?></div>
+                            </div>
+
+                            <!-- Slab 3 -->
+                            <div class="slab-box <?php echo ($serverResult['activeSlab'] == 3) ? 'active-slab' : ''; ?>" id="slabCard3">
+                                <div class="slab-box-title">SLAB 3 (151-250)</div>
+                                <div class="slab-box-rate">₹5.20/u</div>
+                                <div class="slab-box-cost" id="s3Cost">₹<?php echo number_format($serverResult['slabs']['slab3']['cost'], 2); ?></div>
+                            </div>
+
+                            <!-- Slab 4 -->
+                            <div class="slab-box <?php echo ($serverResult['activeSlab'] == 4) ? 'active-slab' : ''; ?>" id="slabCard4">
+                                <div class="slab-box-title">SLAB 4 (>250)</div>
+                                <div class="slab-box-rate">₹6.50/u</div>
+                                <div class="slab-box-cost" id="s4Cost">₹<?php echo number_format($serverResult['slabs']['slab4']['cost'], 2); ?></div>
                             </div>
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-            <!-- TAB 2: TARIFF SCHEDULE -->
-            <div class="tab-pane fade" id="pills-tariffs" role="tabpanel">
-                <div class="minimal-card">
-                    <div class="bracket-tag mb-3">OFFICIAL TARIFF SCHEDULE & SLAB STRUCTURE</div>
-                    
-                    <table class="boring-table">
-                        <thead>
-                            <tr>
-                                <th>TIER</th>
-                                <th>UNIT RANGE (KWH)</th>
-                                <th>RATE PER UNIT (₹)</th>
-                                <th>MAX CAPACITY</th>
-                                <th>DESCRIPTION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>SLAB 1</td>
-                                <td>0 - 50 UNITS</td>
-                                <td>₹ 3.50</td>
-                                <td>50 UNITS</td>
-                                <td>Lifeline / Basic Domestic Consumption</td>
-                            </tr>
-                            <tr>
-                                <td>SLAB 2</td>
-                                <td>51 - 150 UNITS</td>
-                                <td>₹ 4.00</td>
-                                <td>100 UNITS</td>
-                                <td>Standard Household Consumption</td>
-                            </tr>
-                            <tr>
-                                <td>SLAB 3</td>
-                                <td>151 - 250 UNITS</td>
-                                <td>₹ 5.20</td>
-                                <td>100 UNITS</td>
-                                <td>Upper Domestic Consumption Slab</td>
-                            </tr>
-                            <tr>
-                                <td>SLAB 4</td>
-                                <td>ABOVE 250 UNITS</td>
-                                <td>₹ 6.50</td>
-                                <td>UNLIMITED</td>
-                                <td>High-Demand Residential / Commercial Tier</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- TAB 3: APPLIANCE ESTIMATOR -->
-            <div class="tab-pane fade" id="pills-estimator" role="tabpanel">
-                <div class="minimal-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="bracket-tag">HOUSEHOLD APPLIANCE CONSUMPTION ESTIMATOR</div>
-                        <button class="btn-minimal btn-minimal-outline py-2 px-3" id="btnAddAppliance">
-                            + ADD DEVICE
+                    <div class="pt-3 border-top border-secondary">
+                        <button class="btn-minimal btn-minimal-outline w-100" data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                            VIEW INVOICE STATEMENT / PRINT
                         </button>
                     </div>
-
-                    <table class="boring-table mb-4">
-                        <thead>
-                            <tr>
-                                <th>APPLIANCE DEVICE</th>
-                                <th>POWER (WATTS)</th>
-                                <th>QTY</th>
-                                <th>HOURS / DAY</th>
-                                <th class="text-end">MONTHLY (KWH)</th>
-                                <th class="text-center">ACTION</th>
-                            </tr>
-                        </thead>
-                        <tbody id="applianceTableBody">
-                            <tr class="appliance-row">
-                                <td><input type="text" class="form-control-minimal app-name" value="Air Conditioner (1.5 Ton)"></td>
-                                <td><input type="number" class="form-control-minimal app-watts" value="1500" min="1"></td>
-                                <td><input type="number" class="form-control-minimal app-qty" value="1" min="1"></td>
-                                <td><input type="number" class="form-control-minimal app-hours" value="6" min="0" max="24"></td>
-                                <td class="text-end fw-bold app-units">270.0</td>
-                                <td class="text-center"><button class="btn-minimal btn-minimal-outline py-1 px-2 btn-remove-app">X</button></td>
-                            </tr>
-                            <tr class="appliance-row">
-                                <td><input type="text" class="form-control-minimal app-name" value="Refrigerator"></td>
-                                <td><input type="number" class="form-control-minimal app-watts" value="250" min="1"></td>
-                                <td><input type="number" class="form-control-minimal app-qty" value="1" min="1"></td>
-                                <td><input type="number" class="form-control-minimal app-hours" value="24" min="0" max="24"></td>
-                                <td class="text-end fw-bold app-units">180.0</td>
-                                <td class="text-center"><button class="btn-minimal btn-minimal-outline py-1 px-2 btn-remove-app">X</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="d-flex justify-content-between align-items-center p-3 border border-secondary">
-                        <div class="bracket-tag">
-                            ESTIMATED MONTHLY KWH: <span class="fs-4 fw-bold text-white ms-2" id="estimatedApplianceUnits">450</span> UNITS
-                        </div>
-                        <button class="btn-minimal py-2 px-4" id="btnApplyEstimatedUnits">
-                            LOAD UNITS INTO CALCULATOR
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 4: HISTORY -->
-            <div class="tab-pane fade" id="pills-history" role="tabpanel">
-                <div class="minimal-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="bracket-tag">CALCULATION HISTORY LOG</div>
-                        <button class="btn-minimal btn-minimal-outline py-1 px-3" id="btnClearHistory">
-                            CLEAR LOG
-                        </button>
-                    </div>
-
-                    <table class="boring-table">
-                        <thead>
-                            <tr>
-                                <th>DATE</th>
-                                <th>CONSUMER DETAILS</th>
-                                <th>PERIOD</th>
-                                <th>UNITS</th>
-                                <th class="text-end">AMOUNT (₹)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyTableBody">
-                            <!-- Populated dynamically by app.js -->
-                        </tbody>
-                    </table>
                 </div>
             </div>
 
         </div>
+
+        <!-- Tariff Schedule Section -->
+        <div class="mt-4">
+            <div class="minimal-card">
+                <div class="bracket-tag mb-3">OFFICIAL TARIFF SCHEDULE & SLAB RATES</div>
+                
+                <table class="boring-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>TIER</th>
+                            <th>UNIT RANGE (KWH)</th>
+                            <th>RATE PER UNIT (₹)</th>
+                            <th>MAX CAPACITY</th>
+                            <th>DESCRIPTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SLAB 1</td>
+                            <td>0 - 50 UNITS</td>
+                            <td>₹ 3.50</td>
+                            <td>50 UNITS</td>
+                            <td>Lifeline / Basic Domestic Consumption</td>
+                        </tr>
+                        <tr>
+                            <td>SLAB 2</td>
+                            <td>51 - 150 UNITS</td>
+                            <td>₹ 4.00</td>
+                            <td>100 UNITS</td>
+                            <td>Standard Household Consumption</td>
+                        </tr>
+                        <tr>
+                            <td>SLAB 3</td>
+                            <td>151 - 250 UNITS</td>
+                            <td>₹ 5.20</td>
+                            <td>100 UNITS</td>
+                            <td>Upper Domestic Consumption Slab</td>
+                        </tr>
+                        <tr>
+                            <td>SLAB 4</td>
+                            <td>ABOVE 250 UNITS</td>
+                            <td>₹ 6.50</td>
+                            <td>UNLIMITED</td>
+                            <td>High-Demand Residential / Commercial Tier</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Official Statement Invoice Modal (Styled inspired by User Reference Image) -->
+    <!-- Official Statement Invoice Modal -->
     <div class="modal fade boring-invoice-modal" id="invoiceModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
