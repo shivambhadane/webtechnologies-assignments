@@ -1,9 +1,9 @@
 /* ==========================================================================
    PowerCalc Pro - Minimalist High-Contrast Electricity Bill Calculator
-   Style Inspired by High-Contrast Minimalist Typography & Grid Layouts
+   Typography: Inter (Clean, Simple, Neutral Sans-Serif)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
     --bg-primary: #000000;
@@ -18,7 +18,7 @@
     --slab2: #3b82f6;
     --slab3: #f59e0b;
     --slab4: #ef4444;
-    --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -38,13 +38,13 @@
 }
 
 body {
-    font-family: var(--font-heading);
+    font-family: var(--font-sans);
     background-color: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
     margin: 0;
     padding-bottom: 60px;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -56,28 +56,18 @@ body {
 }
 
 .brand-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
     margin: 0;
     line-height: 1;
 }
 
-.brand-tag {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    background: var(--text-primary);
-    color: var(--bg-primary);
-    padding: 4px 8px;
-    font-weight: 700;
-}
-
-/* Bracket Meta Labels */
+/* Meta Labels */
 .bracket-tag {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
     text-transform: uppercase;
 }
@@ -87,7 +77,7 @@ body {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 0px;
-    padding: 28px;
+    padding: 24px;
     height: 100%;
 }
 
@@ -103,9 +93,9 @@ body {
 }
 
 .nav-tabs-minimal .nav-link {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 0.85rem;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
     color: var(--text-muted);
     border: 1px solid transparent;
@@ -123,8 +113,8 @@ body {
 
 /* Form Inputs */
 .form-label-minimal {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
     text-transform: uppercase;
     font-weight: 700;
     color: var(--text-muted);
@@ -138,8 +128,8 @@ body {
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     padding: 12px 14px;
-    font-family: var(--font-mono);
-    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
     border-radius: 0px;
     outline: none;
     transition: border-color 0.2s;
@@ -174,7 +164,7 @@ body {
     border: 1px solid var(--border-color);
     padding: 14px;
     background: var(--bg-input);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
 }
 
 .slab-box.active-slab {
@@ -210,27 +200,28 @@ body {
 }
 
 .grand-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     color: var(--text-muted);
+    font-weight: 600;
 }
 
 .grand-value {
-    font-size: 3.2rem;
+    font-size: 3rem;
     font-weight: 800;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     margin: 8px 0;
 }
 
 /* Minimalist Button */
 .btn-minimal {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
-    padding: 14px 24px;
+    padding: 12px 20px;
     background: var(--text-primary);
     color: var(--bg-primary);
     border: 1px solid var(--border-strong);
@@ -276,7 +267,7 @@ body {
     color: #ffffff !important;
     border: 2px solid #ffffff !important;
     border-radius: 0px !important;
-    font-family: 'Space Grotesk', -apple-system, sans-serif !important;
+    font-family: 'Inter', -apple-system, sans-serif !important;
 }
 
 .boring-invoice-body {
@@ -295,7 +286,7 @@ body {
 }
 
 .boring-brand {
-    font-size: 3rem;
+    font-size: 2.6rem;
     font-weight: 800;
     letter-spacing: -0.04em;
     margin: 0;
@@ -304,7 +295,7 @@ body {
 }
 
 .boring-invoice-title {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: -0.02em;
@@ -323,28 +314,29 @@ body {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 30px;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
 }
 
 .boring-table th {
     border-bottom: 2px solid #ffffff;
     text-align: left;
     padding: 12px 8px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
+    font-weight: 700;
 }
 
 .boring-table td {
     padding: 12px 8px;
     border-bottom: 1px solid #222222;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .boring-summary-block {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 32px;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
 }
 
 .boring-summary-table {
@@ -361,7 +353,7 @@ body {
 }
 
 .boring-payment-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 800;
     text-transform: uppercase;
     margin-bottom: 16px;
@@ -369,7 +361,7 @@ body {
 }
 
 .boring-terms-list {
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     color: #aaaaaa;
     line-height: 1.4;
     padding-left: 14px;
@@ -385,15 +377,4 @@ body {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: #888888;
-}
-
-/* Prompt Display Code Box */
-.prompt-code-block {
-    background: #09090b;
-    border: 1px solid #27272a;
-    padding: 16px;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: #e4e4e7;
-    white-space: pre-wrap;
 }
