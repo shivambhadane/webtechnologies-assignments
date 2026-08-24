@@ -1,243 +1,399 @@
 /* ==========================================================================
-   PowerCalc Pro - Electricity Bill Calculator CSS
-   Theme: Modern Glassmorphic Dark & Clean High-Contrast Light Mode
+   PowerCalc Pro - Minimalist High-Contrast Electricity Bill Calculator
+   Style Inspired by High-Contrast Minimalist Typography & Grid Layouts
    ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
 :root {
-    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --card-border: rgba(255, 255, 255, 0.1);
-    --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --accent-blue: #38bdf8;
-    --accent-indigo: #6366f1;
-    --accent-emerald: #10b981;
-    --accent-amber: #f59e0b;
-    --accent-rose: #f43f5e;
-    --accent-cyan: #06b6d4;
-    --input-bg: rgba(15, 23, 42, 0.6);
-    --input-border: rgba(255, 255, 255, 0.15);
-    --slab1-color: #10b981;
-    --slab2-color: #38bdf8;
-    --slab3-color: #f59e0b;
-    --slab4-color: #f43f5e;
-    --radius-lg: 16px;
-    --radius-md: 12px;
+    --bg-primary: #000000;
+    --bg-card: #0a0a0a;
+    --bg-input: #121212;
+    --border-color: #262626;
+    --border-strong: #ffffff;
+    --text-primary: #ffffff;
+    --text-muted: #888888;
+    --accent: #ffffff;
+    --slab1: #22c55e;
+    --slab2: #3b82f6;
+    --slab3: #f59e0b;
+    --slab4: #ef4444;
+    --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 }
 
 [data-theme="light"] {
-    --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --card-border: rgba(0, 0, 0, 0.08);
-    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --input-bg: rgba(255, 255, 255, 0.9);
-    --input-border: rgba(0, 0, 0, 0.15);
+    --bg-primary: #f4f4f5;
+    --bg-card: #ffffff;
+    --bg-input: #fafafa;
+    --border-color: #e4e4e7;
+    --border-strong: #000000;
+    --text-primary: #000000;
+    --text-muted: #666666;
+    --accent: #000000;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg-gradient);
+    font-family: var(--font-heading);
+    background-color: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
+    margin: 0;
     padding-bottom: 60px;
-    transition: background 0.4s ease, color 0.4s ease;
+    letter-spacing: -0.02em;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Glassmorphism Card Panels */
-.glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--card-shadow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Minimalist Header Branding */
+.brand-header {
+    border-bottom: 2px solid var(--border-strong);
+    padding: 24px 0;
+    background: var(--bg-primary);
 }
 
-.glass-card:hover {
-    border-color: rgba(56, 189, 248, 0.3);
-}
-
-/* Custom Header */
-.app-header {
-    padding: 30px 0;
-    margin-bottom: 20px;
-}
-
-.brand-badge {
-    background: linear-gradient(90deg, #38bdf8, #6366f1);
-    color: #fff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 6px 14px;
-    border-radius: 50px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 12px;
-}
-
-/* Hero Unit Display */
-.live-units-display {
-    font-size: 3.5rem;
+.brand-title {
+    font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #38bdf8, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    margin: 0;
     line-height: 1;
 }
 
-/* Form Controls */
-.form-control, .form-select {
-    background-color: var(--input-bg);
-    border: 1px solid var(--input-border);
-    color: var(--text-primary);
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-.form-control:focus, .form-select:focus {
-    background-color: var(--input-bg);
-    color: var(--text-primary);
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
-}
-
-.form-label {
-    color: var(--text-secondary);
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-}
-
-/* Range Slider */
-.custom-range {
-    height: 8px;
-    border-radius: 4px;
-    accent-color: var(--accent-blue);
-}
-
-/* Slab Visual Cards */
-.slab-card {
-    border-radius: var(--radius-md);
-    padding: 16px;
-    background: rgba(15, 23, 42, 0.4);
-    border: 1px solid var(--card-border);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-[data-theme="light"] .slab-card {
-    background: rgba(241, 245, 249, 0.7);
-}
-
-.slab-card.active-slab {
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
-    transform: translateY(-2px);
-}
-
-.slab-badge {
-    font-size: 0.7rem;
+.brand-tag {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    padding: 4px 8px;
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 4px;
-    color: #fff;
 }
 
-.slab-1 .slab-badge { background-color: var(--slab1-color); }
-.slab-2 .slab-badge { background-color: var(--slab2-color); }
-.slab-3 .slab-badge { background-color: var(--slab3-color); }
-.slab-4 .slab-badge { background-color: var(--slab4-color); }
-
-/* Progress Breakdown Bar */
-.slab-progress-container {
-    height: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    overflow: hidden;
-    display: flex;
+/* Bracket Meta Labels */
+.bracket-tag {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
 }
 
-.slab-progress-bar {
+/* Minimal Cards & Containers */
+.minimal-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 0px;
+    padding: 28px;
     height: 100%;
-    transition: width 0.5s ease;
 }
 
-.bg-slab1 { background-color: var(--slab1-color); }
-.bg-slab2 { background-color: var(--slab2-color); }
-.bg-slab3 { background-color: var(--slab3-color); }
-.bg-slab4 { background-color: var(--slab4-color); }
+.minimal-card:hover {
+    border-color: var(--border-strong);
+}
 
-/* Total Bill Spotlight */
-.bill-hero-card {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(99, 102, 241, 0.15));
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    border-radius: var(--radius-lg);
+/* Navigation Tabs */
+.nav-tabs-minimal {
+    border-bottom: 1px solid var(--border-color);
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.nav-tabs-minimal .nav-link {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    border-radius: 0;
+    padding: 10px 18px;
+    background: transparent;
+}
+
+.nav-tabs-minimal .nav-link.active {
+    color: var(--text-primary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-bottom-color: var(--bg-card);
+}
+
+/* Form Inputs */
+.form-label-minimal {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.form-control-minimal, .form-select-minimal {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    border-radius: 0px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-control-minimal:focus, .form-select-minimal:focus {
+    border-color: var(--border-strong);
+}
+
+/* Custom Range Slider */
+.minimal-range {
+    width: 100%;
+    height: 6px;
+    accent-color: var(--text-primary);
+    cursor: pointer;
+}
+
+/* Minimalist Slab Cards */
+.slab-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 768px) {
+    .slab-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.slab-box {
+    border: 1px solid var(--border-color);
+    padding: 14px;
+    background: var(--bg-input);
+    font-family: var(--font-mono);
+}
+
+.slab-box.active-slab {
+    border: 2px solid var(--border-strong);
+    background: var(--bg-card);
+}
+
+.slab-box-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.slab-box-rate {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 4px 0;
+}
+
+.slab-box-cost {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+/* Grand Total Banner */
+.grand-banner {
+    border: 2px solid var(--border-strong);
     padding: 24px;
     text-align: center;
+    background: var(--bg-card);
+    margin-bottom: 20px;
 }
 
-.bill-amount-grand {
+.grand-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.grand-value {
+    font-size: 3.2rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    margin: 8px 0;
+}
+
+/* Minimalist Button */
+.btn-minimal {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border: 1px solid var(--border-strong);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-minimal:hover {
+    opacity: 0.9;
+}
+
+.btn-minimal-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-minimal-outline:hover {
+    border-color: var(--border-strong);
+}
+
+/* Progress Container */
+.progress-minimal-container {
+    height: 8px;
+    background: var(--border-color);
+    display: flex;
+    margin: 12px 0;
+}
+
+.progress-minimal-bar {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Reference Image Invoice Modal Styling (High Contrast Monochrome) */
+.boring-invoice-modal .modal-content {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 0px !important;
+    font-family: 'Space Grotesk', -apple-system, sans-serif !important;
+}
+
+.boring-invoice-body {
+    padding: 36px;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.boring-invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+}
+
+.boring-brand {
     font-size: 3rem;
     font-weight: 800;
-    color: #38bdf8;
-    letter-spacing: -1px;
+    letter-spacing: -0.04em;
+    margin: 0;
+    line-height: 0.9;
+    text-transform: uppercase;
 }
 
-/* Invoice Printable Styling */
-@media print {
-    body {
-        background: #fff !important;
-        color: #000 !important;
-    }
-    .no-print, .btn, nav, footer, .app-header {
-        display: none !important;
-    }
-    .printable-invoice {
-        display: block !important;
-        border: 1px solid #ddd;
-        padding: 20px;
-    }
+.boring-invoice-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin: 0;
 }
 
-/* Prompt Drawer & Tabs */
-.nav-pills .nav-link {
-    color: var(--text-secondary);
-    border-radius: var(--radius-md);
-    padding: 10px 20px;
-    font-weight: 600;
-    transition: all 0.2s ease;
+.boring-meta-grid {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
 }
 
-.nav-pills .nav-link.active {
-    background: linear-gradient(135deg, #38bdf8, #6366f1);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+.boring-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    font-family: var(--font-mono);
 }
 
-/* Prompt Box */
-.ai-prompt-box {
-    background: #090d16;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 4px solid var(--accent-blue);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    font-family: 'Fira Code', monospace;
+.boring-table th {
+    border-bottom: 2px solid #ffffff;
+    text-align: left;
+    padding: 12px 8px;
     font-size: 0.85rem;
-    color: #7dd3fc;
-    white-space: pre-wrap;
+    text-transform: uppercase;
 }
 
-/* Appliance Table */
-.appliance-table input {
-    max-width: 90px;
+.boring-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #222222;
+    font-size: 0.95rem;
+}
+
+.boring-summary-block {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 32px;
+    font-family: var(--font-mono);
+}
+
+.boring-summary-table {
+    width: 320px;
+}
+
+.boring-summary-table td {
+    padding: 6px 0;
+}
+
+.boring-payment-section {
+    border-top: 2px solid #ffffff;
+    padding-top: 24px;
+}
+
+.boring-payment-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    line-height: 1;
+}
+
+.boring-terms-list {
+    font-size: 0.68rem;
+    color: #aaaaaa;
+    line-height: 1.4;
+    padding-left: 14px;
+    margin: 0;
+}
+
+.boring-footer-meta {
+    border-top: 1px solid #333333;
+    margin-top: 24px;
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #888888;
+}
+
+/* Prompt Display Code Box */
+.prompt-code-block {
+    background: #09090b;
+    border: 1px solid #27272a;
+    padding: 16px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #e4e4e7;
+    white-space: pre-wrap;
 }

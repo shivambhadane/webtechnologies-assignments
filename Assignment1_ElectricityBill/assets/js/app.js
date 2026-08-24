@@ -1,5 +1,5 @@
 /**
- * PowerCalc Pro - Electricity Bill Calculator Frontend Logic
+ * PowerCalc Pro - Minimalist High-Contrast Electricity Bill Calculator Logic
  * Implemented using jQuery & JavaScript (ES6+)
  */
 
@@ -86,7 +86,7 @@ $(document).ready(function () {
         $('#s4Cost').text('₹' + data.s4.cost.toFixed(2));
 
         // Highlight Active Slab
-        $('.slab-card').removeClass('active-slab');
+        $('.slab-box').removeClass('active-slab');
         if (data.units > 250) $('#slabCard4').addClass('active-slab');
         else if (data.units > 150) $('#slabCard3').addClass('active-slab');
         else if (data.units > 50) $('#slabCard2').addClass('active-slab');
@@ -120,7 +120,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         const consumerName = $('#consumerName').val() || 'Valued Customer';
-        const consumerNo = $('#consumerNo').val() || 'BILL-' + Math.floor(100000 + Math.random() * 900000);
+        const consumerNo = $('#consumerNo').val() || 'ELE-' + Math.floor(100000 + Math.random() * 900000);
         const billingMonth = $('#billingMonth').val() || 'Current Month';
         const units = parseFloat($unitsInput.val()) || 0;
 
@@ -134,10 +134,10 @@ $(document).ready(function () {
             },
             dataType: 'json',
             beforeSend: function () {
-                $('#btnCalculate').html('<span class="spinner-border spinner-border-sm me-2"></span> Calculating...').prop('disabled', true);
+                $('#btnCalculate').text('[ CALCULATING... ]').prop('disabled', true);
             },
             success: function (response) {
-                $('#btnCalculate').html('<i class="fas fa-calculator me-2"></i> Calculate Bill').prop('disabled', false);
+                $('#btnCalculate').text('[ CALCULATE BILL (PHP / AJAX) ]').prop('disabled', false);
 
                 if (response.status === 'success') {
                     const data = response.data;
@@ -146,7 +146,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                $('#btnCalculate').html('<i class="fas fa-calculator me-2"></i> Calculate Bill').prop('disabled', false);
+                $('#btnCalculate').text('[ CALCULATE BILL (PHP / AJAX) ]').prop('disabled', false);
                 // Fallback client-side rendering
                 const clientData = calculateBillMath(units);
                 renderInvoiceModal(consumerName, consumerNo, billingMonth, clientData);
@@ -162,50 +162,41 @@ $(document).ready(function () {
         $('#invName').text(name);
         $('#invAccNo').text(accNo);
         $('#invMonth').text(month);
-        $('#invDate').text(new Date().toLocaleDateString());
-        $('#invUnits').text(bill.units);
         $('#invGrandTotal').text('₹' + bill.grandTotal.toFixed(2));
+
+        const s1_u = bill.slabs ? bill.slabs.slab1.units : bill.s1.units;
+        const s1_c = bill.slabs ? bill.slabs.slab1.cost : bill.s1.cost;
+        const s2_u = bill.slabs ? bill.slabs.slab2.units : bill.s2.units;
+        const s2_c = bill.slabs ? bill.slabs.slab2.cost : bill.s2.cost;
+        const s3_u = bill.slabs ? bill.slabs.slab3.units : bill.s3.units;
+        const s3_c = bill.slabs ? bill.slabs.slab3.cost : bill.s3.cost;
+        const s4_u = bill.slabs ? bill.slabs.slab4.units : bill.s4.units;
+        const s4_c = bill.slabs ? bill.slabs.slab4.cost : bill.s4.cost;
 
         let html = `
             <tr>
-                <td>First 50 Units (0-50 @ ₹3.50/unit)</td>
-                <td class="text-center">${bill.slabs ? bill.slabs.slab1.units : bill.s1.units}</td>
-                <td class="text-end">₹3.50</td>
-                <td class="text-end">₹${(bill.slabs ? bill.slabs.slab1.cost : bill.s1.cost).toFixed(2)}</td>
+                <td>First 50 Units (0-50)</td>
+                <td class="text-center">${s1_u}</td>
+                <td class="text-end">3.50</td>
+                <td class="text-end">${s1_c.toFixed(2)}</td>
             </tr>
             <tr>
-                <td>Next 100 Units (51-150 @ ₹4.00/unit)</td>
-                <td class="text-center">${bill.slabs ? bill.slabs.slab2.units : bill.s2.units}</td>
-                <td class="text-end">₹4.00</td>
-                <td class="text-end">₹${(bill.slabs ? bill.slabs.slab2.cost : bill.s2.cost).toFixed(2)}</td>
+                <td>Next 100 Units (51-150)</td>
+                <td class="text-center">${s2_u}</td>
+                <td class="text-end">4.00</td>
+                <td class="text-end">${s2_c.toFixed(2)}</td>
             </tr>
             <tr>
-                <td>Next 100 Units (151-250 @ ₹5.20/unit)</td>
-                <td class="text-center">${bill.slabs ? bill.slabs.slab3.units : bill.s3.units}</td>
-                <td class="text-end">₹5.20</td>
-                <td class="text-end">₹${(bill.slabs ? bill.slabs.slab3.cost : bill.s3.cost).toFixed(2)}</td>
+                <td>Next 100 Units (151-250)</td>
+                <td class="text-center">${s3_u}</td>
+                <td class="text-end">5.20</td>
+                <td class="text-end">${s3_c.toFixed(2)}</td>
             </tr>
             <tr>
-                <td>Above 250 Units (>250 @ ₹6.50/unit)</td>
-                <td class="text-center">${bill.slabs ? bill.slabs.slab4.units : bill.s4.units}</td>
-                <td class="text-end">₹6.50</td>
-                <td class="text-end">₹${(bill.slabs ? bill.slabs.slab4.cost : bill.s4.cost).toFixed(2)}</td>
-            </tr>
-            <tr class="table-active">
-                <th colspan="3">Total Energy Charges</th>
-                <th class="text-end">₹${(bill.totalEnergyCharges || bill.totalEnergy).toFixed(2)}</th>
-            </tr>
-            <tr>
-                <td colspan="3">Fixed Meter Service Charge</td>
-                <td class="text-end">₹${bill.fixedCharge.toFixed(2)}</td>
-            </tr>
-            <tr>
-                <td colspan="3">State Electricity Duty (5%)</td>
-                <td class="text-end">₹${bill.govTax.toFixed(2)}</td>
-            </tr>
-            <tr class="table-primary fw-bold fs-5">
-                <td colspan="3">Grand Payable Amount</td>
-                <td class="text-end text-primary">₹${bill.grandTotal.toFixed(2)}</td>
+                <td>Above 250 Units (>250)</td>
+                <td class="text-center">${s4_u}</td>
+                <td class="text-end">6.50</td>
+                <td class="text-end">${s4_c.toFixed(2)}</td>
             </tr>
         `;
 
@@ -221,19 +212,19 @@ $(document).ready(function () {
     // ----------------------------------------------------
     // 4. Appliance Estimator Logic
     // ----------------------------------------------------
-    $('.appliance-row input').on('input change', function () {
+    $(document).on('input change', '.appliance-row input', function () {
         calculateApplianceTotal();
     });
 
     $('#btnAddAppliance').on('click', function () {
         const newRowHtml = `
             <tr class="appliance-row">
-                <td><input type="text" class="form-control form-control-sm app-name" value="Custom Device"></td>
-                <td><input type="number" class="form-control form-control-sm app-watts" value="100" min="1"></td>
-                <td><input type="number" class="form-control form-control-sm app-qty" value="1" min="1"></td>
-                <td><input type="number" class="form-control form-control-sm app-hours" value="5" min="0" max="24"></td>
+                <td><input type="text" class="form-control-minimal app-name" value="Custom Device"></td>
+                <td><input type="number" class="form-control-minimal app-watts" value="100" min="1"></td>
+                <td><input type="number" class="form-control-minimal app-qty" value="1" min="1"></td>
+                <td><input type="number" class="form-control-minimal app-hours" value="5" min="0" max="24"></td>
                 <td class="text-end fw-bold app-units">15.0</td>
-                <td class="text-center"><button class="btn btn-sm btn-outline-danger btn-remove-app"><i class="fas fa-trash"></i></button></td>
+                <td class="text-center"><button class="btn-minimal btn-minimal-outline py-1 px-2 btn-remove-app">[X]</button></td>
             </tr>
         `;
         $('#applianceTableBody').append(newRowHtml);
@@ -266,7 +257,8 @@ $(document).ready(function () {
         const units = Math.round(parseFloat($('#estimatedApplianceUnits').text()) || 0);
         $unitsInput.val(units).trigger('change');
         // Switch to Calculator tab
-        $('#pills-calculator-tab').tab('show');
+        const calcTab = new bootstrap.Tab(document.getElementById('pills-calculator-tab'));
+        calcTab.show();
     });
 
     // ----------------------------------------------------
@@ -290,7 +282,7 @@ $(document).ready(function () {
 
     function renderHistoryTable() {
         if (billHistory.length === 0) {
-            $('#historyTableBody').html('<tr><td colspan="5" class="text-center text-muted py-4">No calculation history found.</td></tr>');
+            $('#historyTableBody').html('<tr><td colspan="5" class="text-center text-muted py-4">[ NO CALCULATION HISTORY RECORDED ]</td></tr>');
             return;
         }
 
@@ -298,11 +290,11 @@ $(document).ready(function () {
         billHistory.forEach(item => {
             html += `
                 <tr>
-                    <td>${item.date}</td>
-                    <td><strong>${item.name}</strong> <br><small class="text-muted">${item.accNo}</small></td>
+                    <td>[${item.date}]</td>
+                    <td><strong>${item.name}</strong> <br><small class="text-muted">[#${item.accNo}]</small></td>
                     <td>${item.month}</td>
-                    <td><span class="badge bg-info">${item.units} kWh</span></td>
-                    <td class="fw-bold text-success">₹${item.amount.toFixed(2)}</td>
+                    <td>${item.units} KWH</td>
+                    <td class="text-end fw-bold">₹${item.amount.toFixed(2)}</td>
                 </tr>
             `;
         });
@@ -316,24 +308,13 @@ $(document).ready(function () {
     });
 
     // ----------------------------------------------------
-    // 6. Theme Toggle & Prompt Copy
+    // 6. Theme Toggle
     // ----------------------------------------------------
     $themeToggle.on('click', function () {
         const currentTheme = $('html').attr('data-theme') || 'dark';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         $('html').attr('data-theme', newTheme);
-        $(this).html(newTheme === 'dark' ? '<i class="fas fa-sun me-1"></i> Light' : '<i class="fas fa-moon me-1"></i> Dark');
-    });
-
-    $('.btn-copy-prompt').on('click', function () {
-        const promptText = $(this).siblings('.ai-prompt-box').text();
-        navigator.clipboard.writeText(promptText).then(() => {
-            const $btn = $(this);
-            $btn.html('<i class="fas fa-check me-1"></i> Copied!');
-            setTimeout(() => {
-                $btn.html('<i class="fas fa-copy me-1"></i> Copy Prompt');
-            }, 2000);
-        });
+        $(this).text(newTheme === 'dark' ? '[THEME MODE]' : '[LIGHT MODE]');
     });
 
     // Initializations
