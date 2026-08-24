@@ -1,0 +1,227 @@
+/* ==========================================================================
+   TimeSpot Ultra-Minimalist World Clock Dashboard Stylesheet
+   Inspired by Swiss Typography, Minimalist UI & Dynamic Day/Night Cards
+   ========================================================================== */
+
+:root {
+  /* Fonts */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Theme Defaults: TimeSpot Light Minimalist (Default as in Reference UI) */
+  --page-bg: #e65c3b; /* Vibrant terracotta outer background frame as seen in screenshot */
+  --container-bg: #f2f2f4;
+  --container-border: rgba(0, 0, 0, 0.08);
+  --card-bg: #e8e8ec;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-dark-bg: #09090b;
+  --card-dark-text: #ffffff;
+  
+  --text-primary: #09090b;
+  --text-secondary: #52525b;
+  --text-muted: #8e8e93;
+
+  --accent-color: #09090b;
+  --accent-orange: #ea580c;
+  --accent-blue: #2563eb;
+  --accent-gold: #f59e0b;
+
+  --badge-day-bg: rgba(245, 158, 11, 0.15);
+  --badge-day-text: #d97706;
+  --badge-night-bg: rgba(255, 255, 255, 0.15);
+  --badge-night-text: #fef08a;
+
+  --shadow-container: 0 30px 60px -12px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+  --radius-container: 32px;
+  --radius-card: 20px;
+  --radius-pill: 9999px;
+}
+
+/* Dark Theme Overrides */
+[data-theme="dark"] {
+  --page-bg: #090a0f;
+  --container-bg: #121318;
+  --container-border: rgba(255, 255, 255, 0.08);
+  --card-bg: #1a1b22;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-dark-bg: #000000;
+  --card-dark-text: #ffffff;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+
+  --accent-color: #38bdf8;
+  --badge-day-bg: rgba(245, 158, 11, 0.2);
+  --badge-day-text: #fbbf24;
+  --badge-night-bg: rgba(255, 255, 255, 0.1);
+  --badge-night-text: #fde047;
+
+  --shadow-container: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
+}
+
+/* Reset & Global Elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Main Dashboard Outer Wrapper */
+.timespot-wrapper {
+  width: 100%;
+  max-width: 1240px;
+  background-color: var(--container-bg);
+  border: 1px solid var(--container-border);
+  border-radius: var(--radius-container);
+  box-shadow: var(--shadow-container);
+  padding: 32px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .timespot-wrapper {
+    padding: 20px 18px;
+    border-radius: 20px;
+  }
+}
+
+/* TimeSpot Giant Clock Text */
+.timespot-clock-display {
+  font-family: var(--font-sans);
+  font-size: clamp(3.8rem, 11vw, 8.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pill Toggle Buttons */
+.pill-toggle {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pill-option {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pill-option.active {
+  background: var(--text-primary);
+  color: var(--container-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* City Card Component (Matching Reference Image) */
+.timespot-city-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+}
+
+.timespot-city-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark Inverted City Card (for Night or Active Primary City) */
+.timespot-city-card.card-dark, .timespot-city-card.active-primary {
+  background: var(--card-dark-bg) !important;
+  color: var(--card-dark-text) !important;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.timespot-city-card.card-dark .card-city-name,
+.timespot-city-card.active-primary .card-city-name {
+  color: #ffffff !important;
+}
+
+.timespot-city-card.card-dark .card-utc-offset,
+.timespot-city-card.active-primary .card-utc-offset {
+  color: #a1a1aa !important;
+}
+
+.timespot-city-card.card-dark .card-time-text,
+.timespot-city-card.active-primary .card-time-text {
+  color: #ffffff !important;
+}
+
+/* Badges */
+.badge-day {
+  background: var(--badge-day-bg);
+  color: var(--badge-day-text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-night {
+  background: var(--badge-night-bg);
+  color: var(--badge-night-text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+}
