@@ -1,0 +1,243 @@
+/* ==========================================================================
+   PowerCalc Pro - Electricity Bill Calculator CSS
+   Theme: Modern Glassmorphic Dark & Clean High-Contrast Light Mode
+   ========================================================================== */
+
+:root {
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-blue: #38bdf8;
+    --accent-indigo: #6366f1;
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #f43f5e;
+    --accent-cyan: #06b6d4;
+    --input-bg: rgba(15, 23, 42, 0.6);
+    --input-border: rgba(255, 255, 255, 0.15);
+    --slab1-color: #10b981;
+    --slab2-color: #38bdf8;
+    --slab3-color: #f59e0b;
+    --slab4-color: #f43f5e;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+}
+
+[data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(0, 0, 0, 0.08);
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --input-border: rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding-bottom: 60px;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Glassmorphism Card Panels */
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+/* Custom Header */
+.app-header {
+    padding: 30px 0;
+    margin-bottom: 20px;
+}
+
+.brand-badge {
+    background: linear-gradient(90deg, #38bdf8, #6366f1);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+/* Hero Unit Display */
+.live-units-display {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+}
+
+.form-label {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+/* Range Slider */
+.custom-range {
+    height: 8px;
+    border-radius: 4px;
+    accent-color: var(--accent-blue);
+}
+
+/* Slab Visual Cards */
+.slab-card {
+    border-radius: var(--radius-md);
+    padding: 16px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--card-border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .slab-card {
+    background: rgba(241, 245, 249, 0.7);
+}
+
+.slab-card.active-slab {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    transform: translateY(-2px);
+}
+
+.slab-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.slab-1 .slab-badge { background-color: var(--slab1-color); }
+.slab-2 .slab-badge { background-color: var(--slab2-color); }
+.slab-3 .slab-badge { background-color: var(--slab3-color); }
+.slab-4 .slab-badge { background-color: var(--slab4-color); }
+
+/* Progress Breakdown Bar */
+.slab-progress-container {
+    height: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+}
+
+.slab-progress-bar {
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+.bg-slab1 { background-color: var(--slab1-color); }
+.bg-slab2 { background-color: var(--slab2-color); }
+.bg-slab3 { background-color: var(--slab3-color); }
+.bg-slab4 { background-color: var(--slab4-color); }
+
+/* Total Bill Spotlight */
+.bill-hero-card {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(99, 102, 241, 0.15));
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-align: center;
+}
+
+.bill-amount-grand {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #38bdf8;
+    letter-spacing: -1px;
+}
+
+/* Invoice Printable Styling */
+@media print {
+    body {
+        background: #fff !important;
+        color: #000 !important;
+    }
+    .no-print, .btn, nav, footer, .app-header {
+        display: none !important;
+    }
+    .printable-invoice {
+        display: block !important;
+        border: 1px solid #ddd;
+        padding: 20px;
+    }
+}
+
+/* Prompt Drawer & Tabs */
+.nav-pills .nav-link {
+    color: var(--text-secondary);
+    border-radius: var(--radius-md);
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.nav-pills .nav-link.active {
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+/* Prompt Box */
+.ai-prompt-box {
+    background: #090d16;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    color: #7dd3fc;
+    white-space: pre-wrap;
+}
+
+/* Appliance Table */
+.appliance-table input {
+    max-width: 90px;
+}
