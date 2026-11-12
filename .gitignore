@@ -1,5 +1,12 @@
 # Dependencies
 node_modules/
+.pnpm-store/
+
+# Maven / Java build output
+target/
+*.war
+*.class
+*.jar
 
 # Production build output
 dist/
@@ -9,7 +16,13 @@ dist-ssr/
 *.log
 npm-debug.log*
 
+# Environment
+.env
+.env.local
+
 # OS / IDE
 .DS_Store
 .vscode/
 .idea/
+*.iml
+
