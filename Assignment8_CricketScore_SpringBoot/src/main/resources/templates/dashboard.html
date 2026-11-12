@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIT CricPulse - Real-Time Cricket Score System</title>
+    <!-- Google Fonts & Bootstrap 5.3 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        :root {
+            --pitch-green: #0f382c;
+            --pitch-dark: #08221b;
+            --pitch-accent: #10b981;
+            --live-red: #ef4444;
+            --gold-accent: #f59e0b;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--pitch-dark) 0%, var(--pitch-green) 100%);
+            border-bottom: 2px solid var(--pitch-accent);
+        }
+
+        .brand-logo {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-badge {
+            font-size: 0.72rem;
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            font-weight: 700;
+        }
+
+        /* Match Navigation Tabs */
+        .match-pill {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .match-pill:hover {
+            border-color: var(--pitch-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .match-pill.active {
+            border-color: var(--pitch-accent);
+            background: #ecfdf5;
+            box-shadow: 0 0 0 2px var(--pitch-accent);
+        }
+
+        /* Live Score Card */
+        .score-banner {
+            background: linear-gradient(135deg, #091e17 0%, #0e3b2e 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(15, 56, 44, 0.25);
+        }
+
+        .score-banner::after {
+            content: "🏏";
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            font-size: 11rem;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .live-pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--live-red);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .big-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3.25rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -1.5px;
+        }
+
+        .big-overs {
+            font-size: 1.35rem;
+            opacity: 0.85;
+            font-weight: 600;
+        }
+
+        /* Ball pill tags */
+        .ball-tag {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .ball-dot { background: #334155; color: #94a3b8; }
+        .ball-single { background: #1e293b; color: #f8fafc; border: 1px solid #475569; }
+        .ball-four { background: #1d4ed8; color: #ffffff; }
+        .ball-six { background: #7c3aed; color: #ffffff; }
+        .ball-wicket { background: #dc2626; color: #ffffff; }
+
+        /* Tables */
+        .custom-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .custom-card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .striker-highlight {
+            background-color: #ecfdf5 !important;
+            font-weight: 700;
+        }
+
+        .striker-icon {
+            color: var(--pitch-accent);
+            margin-right: 0.35rem;
+        }
+
+        /* Action Buttons */
+        .btn-simulate {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            font-weight: 700;
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.25);
+            transition: all 0.15s ease;
+        }
+
+        .btn-simulate:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px -2px rgba(16, 185, 129, 0.35);
+            color: #ffffff;
+        }
+
+        /* Commentary Feed */
+        .comm-item {
+            padding: 0.85rem 1.25rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .comm-item:last-child {
+            border-bottom: none;
+        }
+
+        .comm-over {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            min-width: 45px;
+            color: #475569;
+        }
+
+        .code-box {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-custom py-3">
+        <div class="container">
+            <a class="navbar-brand brand-logo" href="/dashboard">
+                <i class="bi bi-broadcast text-success"></i>
+                <span>VIT CricPulse</span>
+                <span class="brand-badge">Spring Boot REST + Live UI</span>
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-dark border border-secondary text-light px-3 py-2">
+                    <i class="bi bi-server me-1 text-success"></i> Port 8083 (Active)
+                </span>
+                <a href="/api/matches" target="_blank" class="btn btn-sm btn-outline-light rounded-pill px-3">
+                    <i class="bi bi-braces me-1"></i> REST API JSON
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container py-4">
+
+        <!-- Top Header & Match Selector -->
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-6">
+                <h4 class="fw-bold mb-1">Live Cricket Match Management Dashboard</h4>
+                <p class="text-muted small mb-0">CS3111 Web Technology Practical 8 &bull; Prof. Dr. Yashwant V. Dongre</p>
+            </div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <button class="btn btn-simulate" id="btnSimulate" onclick="simulateNextBall()">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                    <span>Simulate Next Ball (Live REST)</span>
+                </button>
+                <button class="btn btn-outline-secondary ms-2 rounded-3" onclick="resetMatch()">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </button>
+            </div>
+        </div>
+
+        <!-- Match Selectors Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4" th:each="m : ${matches}">
+                <a th:href="@{/dashboard(matchId=${m.id})}"
+                   class="match-pill"
+                   th:classappend="${m.id == activeMatch.id} ? 'active' : ''">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="small fw-bold text-uppercase text-muted" th:text="${m.matchType}">T20</span>
+                        <span th:if="${m.status.name() == 'LIVE'}" class="badge bg-danger small d-flex align-items-center gap-1">
+                            <span class="live-pulse-dot"></span> LIVE
+                        </span>
+                        <span th:if="${m.status.name() == 'COMPLETED'}" class="badge bg-secondary small">
+                            COMPLETED
+                        </span>
+                        <span th:if="${m.status.name() == 'UPCOMING'}" class="badge bg-info text-dark small">
+                            UPCOMING
+                        </span>
+                    </div>
+                    <div class="fw-bold fs-6 mt-1" th:text="${m.team1} + ' vs ' + ${m.team2}">Match Title</div>
+                    <div class="small text-muted" th:text="${m.venue}">Venue</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Featured Match Score Banner -->
+        <div class="score-banner mb-4">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span th:if="${activeMatch.status.name() == 'LIVE'}" class="badge bg-danger px-2 py-1 small d-inline-flex align-items-center gap-1">
+                            <span class="live-pulse-dot"></span> LIVE COVERAGE
+                        </span>
+                        <span class="badge bg-dark text-white-50" th:text="${activeMatch.matchType}">T20</span>
+                        <span class="text-white-50 small" th:text="${activeMatch.venue}">Barbados</span>
+                    </div>
+                    <h2 class="fw-bold mb-3" th:text="${activeMatch.title}">ICC T20 World Cup Final</h2>
+
+                    <div class="d-flex align-items-baseline gap-3">
+                        <div class="big-score" id="scoreDisplay">
+                            <span th:text="${activeMatch.runs}">158</span>/<span th:text="${activeMatch.wickets}">3</span>
+                        </div>
+                        <div class="big-overs" id="oversDisplay">
+                            (<span th:text="${activeMatch.oversDisplay}">17.2</span> / <span th:text="${activeMatch.totalOvers}">20</span> ov)
+                        </div>
+                    </div>
+
+                    <div class="mt-3 d-flex flex-wrap gap-3 text-white-50 small">
+                        <div>CRR: <strong class="text-white" id="crrDisplay" th:text="${activeMatch.currentRunRate}">9.12</strong></div>
+                        <div th:if="${activeMatch.requiredRunRate != null}">RRR: <strong class="text-warning" th:text="${activeMatch.requiredRunRate}">11.4</strong></div>
+                        <div>Batting: <strong class="text-white" id="battingTeamDisplay" th:text="${activeMatch.battingTeam}">India</strong></div>
+                        <div>Bowling: <strong class="text-white" id="bowlingTeamDisplay" th:text="${activeMatch.bowlingTeam}">South Africa</strong></div>
+                    </div>
+
+                    <div th:if="${activeMatch.resultSummary != null and !activeMatch.resultSummary.isEmpty()}" class="mt-2 text-warning fw-bold">
+                        <i class="bi bi-trophy-fill me-1"></i> <span th:text="${activeMatch.resultSummary}">Result</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 text-lg-end mt-4 mt-lg-0">
+                    <div class="mb-2 text-white-50 small fw-bold text-uppercase">Recent Deliveries</div>
+                    <div class="d-flex justify-content-lg-end gap-2" id="recentBallsContainer">
+                        <span th:each="b : ${activeMatch.recentBalls}"
+                              class="ball-tag"
+                              th:classappend="${b == 'W'} ? 'ball-wicket' : (${b == '4'} ? 'ball-four' : (${b == '6'} ? 'ball-six' : (${b == '•'} ? 'ball-dot' : 'ball-single')))"
+                              th:text="${b}">1</span>
+                    </div>
+                    <div class="mt-3">
+                        <span class="small text-white-50">Auto-refresh & Live State Synchronized</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batsmen & Bowlers Stats Tables -->
+        <div class="row">
+            <!-- Batting Card -->
+            <div class="col-lg-8">
+                <div class="custom-card">
+                    <div class="custom-card-header">
+                        <span class="fw-bold"><i class="bi bi-person-lines-fill me-1 text-primary"></i> Batsman Statistics</span>
+                        <span class="badge bg-light text-dark border">Innings 1</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0" id="batsmenTable">
+                            <thead class="table-light small text-muted text-uppercase">
+                                <tr>
+                                    <th>Batter</th>
+                                    <th>Dismissal</th>
+                                    <th class="text-end">R</th>
+                                    <th class="text-end">B</th>
+                                    <th class="text-end">4s</th>
+                                    <th class="text-end">6s</th>
+                                    <th class="text-end">SR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="b : ${activeMatch.batsmen}" th:classappend="${!b.out and b.onStrike} ? 'striker-highlight' : ''">
+                                    <td>
+                                        <span th:if="${!b.out and b.onStrike}" class="striker-icon">🏏</span>
+                                        <span th:text="${b.name}" class="fw-semibold">Virat Kohli</span>
+                                    </td>
+                                    <td class="text-muted small" th:text="${b.dismissalInfo}">not out</td>
+                                    <td class="text-end fw-bold" th:text="${b.runs}">70</td>
+                                    <td class="text-end text-muted" th:text="${b.ballsFaced}">53</td>
+                                    <td class="text-end text-muted" th:text="${b.fours}">5</td>
+                                    <td class="text-end text-muted" th:text="${b.sixes}">2</td>
+                                    <td class="text-end fw-bold text-success" th:text="${b.strikeRate}">132.08</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bowlers Card -->
+                <div class="custom-card">
+                    <div class="custom-card-header">
+                        <span class="fw-bold"><i class="bi bi-bullseye me-1 text-danger"></i> Bowling Card</span>
+                        <span class="badge bg-light text-dark border" th:text="${activeMatch.bowlingTeam}">South Africa</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0" id="bowlersTable">
+                            <thead class="table-light small text-muted text-uppercase">
+                                <tr>
+                                    <th>Bowler</th>
+                                    <th class="text-end">O</th>
+                                    <th class="text-end">M</th>
+                                    <th class="text-end">R</th>
+                                    <th class="text-end">W</th>
+                                    <th class="text-end">ECON</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="bow : ${activeMatch.bowlers}">
+                                    <td class="fw-semibold" th:text="${bow.name}">Kagiso Rabada</td>
+                                    <td class="text-end" th:text="${bow.oversDisplay}">3.2</td>
+                                    <td class="text-end text-muted" th:text="${bow.maidens}">0</td>
+                                    <td class="text-end" th:text="${bow.runsConceded}">29</td>
+                                    <td class="text-end fw-bold text-danger" th:text="${bow.wickets}">1</td>
+                                    <td class="text-end text-muted" th:text="${bow.economyRate}">8.70</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Commentary & Match Info Sidebar -->
+            <div class="col-lg-4">
+                <div class="custom-card">
+                    <div class="custom-card-header">
+                        <span class="fw-bold"><i class="bi bi-chat-left-dots-fill me-1 text-info"></i> Ball-by-Ball Feed</span>
+                        <span class="badge bg-success-subtle text-success small">Real-time</span>
+                    </div>
+                    <div id="commentaryFeed" style="max-height: 480px; overflow-y: auto;">
+                        <div th:each="comm : ${activeMatch.commentary}" class="comm-item">
+                            <div class="comm-over" th:text="${comm.over} + '.' + ${comm.ballInOver}">17.2</div>
+                            <div>
+                                <div class="small text-muted mb-1">
+                                    <strong th:text="${comm.bowler}">Rabada</strong> to <strong th:text="${comm.batsman}">Kohli</strong> &bull;
+                                    <span class="badge" th:classappend="${comm.wicket} ? 'bg-danger' : (${comm.runs == 4 or comm.runs == 6} ? 'bg-primary' : 'bg-secondary')"
+                                          th:text="${comm.wicket} ? 'WICKET' : (${comm.runs} + ' Runs')">1 Run</span>
+                                </div>
+                                <div class="small text-dark" th:text="${comm.commentary}">Shot through the gap</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REST API Developer Documentation Accordion -->
+        <div class="custom-card mt-3">
+            <div class="custom-card-header">
+                <span class="fw-bold"><i class="bi bi-code-slash me-1 text-primary"></i> REST API Documentation (Dr. Dongre Lab Specification)</span>
+                <span class="badge bg-secondary">JSON Endpoints</span>
+            </div>
+            <div class="p-3">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="code-box">
+# 1. Fetch All Cricket Matches
+GET http://localhost:8083/api/matches
+
+# 2. Get Single Live Match Details
+GET http://localhost:8083/api/matches/match-101
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="code-box">
+# 3. Simulate Next Ball via REST POST
+curl -X POST http://localhost:8083/api/matches/match-101/simulate
+
+# 4. Manual Score Custom Delivery
+curl -X POST http://localhost:8083/api/matches/match-101/ball \
+  -H "Content-Type: application/json" \
+  -d '{"runs": 4, "wicket": false, "commentary": "Cover drive four"}'
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Interactive Client Script for Real-Time REST Updates -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const matchId = /*[[${activeMatch.id}]]*/ 'match-101';
+
+        async function simulateNextBall() {
+            const btn = document.getElementById('btnSimulate');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Processing...';
+
+            try {
+                const response = await fetch(`/api/matches/${matchId}/simulate`, {
+                    method: 'POST'
+                });
+                if (response.ok) {
+                    const match = await response.json();
+                    updateDashboard(match);
+                } else {
+                    alert('Error simulating ball from Spring Boot API');
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-lightning-charge-fill"></i> <span>Simulate Next Ball (Live REST)</span>';
+            }
+        }
+
+        async function resetMatch() {
+            try {
+                const res = await fetch(`/api/matches/${matchId}/reset`, { method: 'POST' });
+                if (res.ok) {
+                    window.location.reload();
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function updateDashboard(match) {
+            // Update score & overs
+            document.getElementById('scoreDisplay').innerHTML = `<span>${match.runs}</span>/<span>${match.wickets}</span>`;
+            document.getElementById('oversDisplay').innerHTML = `(<span>${match.oversDisplay}</span> / <span>${match.totalOvers}</span> ov)`;
+            document.getElementById('crrDisplay').innerText = match.currentRunRate;
+
+            // Update recent balls
+            const recentContainer = document.getElementById('recentBallsContainer');
+            if (recentContainer && match.recentBalls) {
+                recentContainer.innerHTML = match.recentBalls.map(b => {
+                    let cls = 'ball-single';
+                    if (b === 'W') cls = 'ball-wicket';
+                    else if (b === '4') cls = 'ball-four';
+                    else if (b === '6') cls = 'ball-six';
+                    else if (b === '•') cls = 'ball-dot';
+                    return `<span class="ball-tag ${cls}">${b}</span>`;
+                }).join('');
+            }
+
+            // Update Batsmen Table
+            const bTable = document.querySelector('#batsmenTable tbody');
+            if (bTable && match.batsmen) {
+                bTable.innerHTML = match.batsmen.map(b => `
+                    <tr class="${!b.out && b.onStrike ? 'striker-highlight' : ''}">
+                        <td>
+                            ${!b.out && b.onStrike ? '<span class="striker-icon">🏏</span>' : ''}
+                            <span class="fw-semibold">${b.name}</span>
+                        </td>
+                        <td class="text-muted small">${b.dismissalInfo || 'not out'}</td>
+                        <td class="text-end fw-bold">${b.runs}</td>
+                        <td class="text-end text-muted">${b.ballsFaced}</td>
+                        <td class="text-end text-muted">${b.fours}</td>
+                        <td class="text-end text-muted">${b.sixes}</td>
+                        <td class="text-end fw-bold text-success">${b.strikeRate}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Update Bowlers Table
+            const bowTable = document.querySelector('#bowlersTable tbody');
+            if (bowTable && match.bowlers) {
+                bowTable.innerHTML = match.bowlers.map(bow => `
+                    <tr>
+                        <td class="fw-semibold">${bow.name}</td>
+                        <td class="text-end">${bow.oversDisplay}</td>
+                        <td class="text-end text-muted">${bow.maidens}</td>
+                        <td class="text-end">${bow.runsConceded}</td>
+                        <td class="text-end fw-bold text-danger">${bow.wickets}</td>
+                        <td class="text-end text-muted">${bow.economyRate}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Update Commentary
+            const commFeed = document.getElementById('commentaryFeed');
+            if (commFeed && match.commentary) {
+                commFeed.innerHTML = match.commentary.map(comm => `
+                    <div class="comm-item">
+                        <div class="comm-over">${comm.over}.${comm.ballInOver}</div>
+                        <div>
+                            <div class="small text-muted mb-1">
+                                <strong>${comm.bowler}</strong> to <strong>${comm.batsman}</strong> &bull;
+                                <span class="badge ${comm.wicket ? 'bg-danger' : (comm.runs === 4 || comm.runs === 6 ? 'bg-primary' : 'bg-secondary')}">
+                                    ${comm.wicket ? 'WICKET' : comm.runs + ' Runs'}
+                                </span>
+                            </div>
+                            <div class="small text-dark">${comm.commentary}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        /*]]>*/
+    </script>
+</body>
+</html>
