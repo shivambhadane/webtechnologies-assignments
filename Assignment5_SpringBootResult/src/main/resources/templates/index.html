@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIT Pune - Semester Result Management System (Spring Boot)</title>
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #0f172a; }
+        .hero-banner { background: linear-gradient(135deg, #09203f 0%, #537895 100%); color: white; padding: 40px 0 65px; border-bottom: 4px solid #38bdf8; }
+        .main-card { margin-top: -40px; background: white; border-radius: 20px; box-shadow: 0 15px 30px -5px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
+        .subject-card { background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; padding: 18px; height: 100%; }
+        .badge-formula { background: #e0f2fe; color: #0369a1; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="hero-banner text-center">
+        <div class="container">
+            <span class="badge bg-white text-dark px-3 py-2 rounded-pill fw-semibold mb-2">CS3111: Web Technologies — Practical 5</span>
+            <h1 class="fw-bold mb-1">Vishwakarma Institute of Technology, Pune</h1>
+            <p class="text-white-50 mb-0">Student Semester Result Assessment Portal • Spring Boot 3 &amp; JPA/MySQL</p>
+        </div>
+    </header>
+
+    <main class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-11">
+                <div class="main-card p-4 p-md-5">
+
+                    <!-- Formula Alert -->
+                    <div class="alert alert-info border-0 shadow-sm d-flex align-items-center mb-4">
+                        <i class="bi bi-info-circle-fill fs-4 me-3 text-primary"></i>
+                        <div>
+                            <strong>Official Grading Weightage Formula:</strong>
+                            <span class="badge-formula ms-2">Subject Total = (MSE × 30%) + (ESE × 70%)</span>
+                            <span class="ms-2 text-muted small">Passing criterion: Minimum 40 marks per subject.</span>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/calculate}" method="POST" th:object="${student}">
+                        <h5 class="fw-bold text-uppercase text-secondary mb-3"><i class="bi bi-person-badge me-2"></i>Student Information</h5>
+                        <div class="row g-3 mb-4 pb-3 border-bottom">
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">PRN / Roll Number</label>
+                                <input type="text" class="form-control" th:field="*{prn}" placeholder="e.g. 12210892" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Student Full Name</label>
+                                <input type="text" class="form-control" th:field="*{studentName}" placeholder="e.g. Shivam Bhadane" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Branch</label>
+                                <input type="text" class="form-control" th:field="*{branch}" value="Computer Engineering" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-semibold">Semester</label>
+                                <input type="text" class="form-control" th:field="*{semester}" value="Semester IV" required>
+                            </div>
+                        </div>
+
+                        <!-- 4 Subjects Marks Inputs -->
+                        <h5 class="fw-bold text-uppercase text-secondary mb-3"><i class="bi bi-book me-2"></i>Four Core Subjects Assessment (MSE &amp; ESE Marks out of 100)</h5>
+                        <div class="row g-4 mb-4">
+                            <!-- Subject 1 -->
+                            <div class="col-md-6">
+                                <div class="subject-card">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold mb-0 text-primary">1. Web Technologies (CS3111)</h6>
+                                        <span class="badge bg-primary-subtle text-primary">Core</span>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <label class="small text-muted fw-semibold">MSE (30%)</label>
+                                            <input type="number" step="0.5" min="0" max="100" class="form-control mark-input" th:field="*{sub1Mse}" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="small text-muted fw-semibold">ESE (70%)</label>
+                                            <input type="number" step="0.5" min="0" max="100" class="form-control mark-input" th:field="*{sub1Ese}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Subject 2 -->
+                            <div class="col-md-6">
+                                <div class="subject-card">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold mb-0 text-primary">2. Operating Systems (CS3112)</h6>
+                                        <span class="badge bg-primary-subtle text-primary">Core</span>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <label class="small text-muted fw-semibold">MSE (30%)</label>
+                                            <input type="number" step="0.5" min="0" max="100" class="form-control mark-input" th:field="*{sub2Mse}" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="small text-muted fw-semibold">ESE (70%)</label>
+                                            <input type="number" step="0.5" min="0" max="100" class="form-control mark-input" th:field="*{sub2Ese}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Subject 3 -->
+                            <div class="col-md-6">
+                                <div class="subject-card">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold mb-0 text-primary">3. Computer Networks (CS3113)</h6>
+                                        <span class="badge bg-primary-subtle text-primary">Core</span>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <label class="small text-muted fw-semibold">MSE (30%)</label>
+                                            <input type="number" step="0.5" min="0" max="100" class="form-control mark-input" th:field="*{sub3Mse}" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="small text-muted fw-semibold">ESE (70%)</label>
+                                            <input type="number" step="0.5" min="0" max="100" class="form-control mark-input" th:field="*{sub3Ese}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Subject 4 -->
+                            <div class="col-md-6">
+                                <div class="subject-card">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold mb-0 text-primary">4. Database Management Systems (CS3114)</h6>
+                                        <span class="badge bg-primary-subtle text-primary">Core</span>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <label class="small text-muted fw-semibold">MSE (30%)</label>
+                                            <input type="number" step="0.5" min="0" max="100" class="form-control mark-input" th:field="*{sub4Mse}" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="small text-muted fw-semibold">ESE (70%)</label>
+                                            <input type="number" step="0.5" min="0" max="100" class="form-control mark-input" th:field="*{sub4Ese}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                            <a th:href="@{/records}" class="btn btn-outline-secondary">
+                                <i class="bi bi-table me-1"></i> View All Stored Records (<span th:text="${#lists.size(results)}">0</span>)
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold shadow">
+                                <i class="bi bi-file-earmark-check me-2"></i>Compute &amp; Generate Official Grade Sheet
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-4 text-muted small border-top bg-white">
+        <p class="mb-0">CS3111: Web Technologies Laboratory • Department of Computer Engineering, VIT Pune</p>
+    </footer>
+</body>
+</html>

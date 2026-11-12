@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Card - <span th:text="${res.prn}">12210892</span></title>
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #0f172a; }
+        .report-card { max-width: 900px; margin: 40px auto; background: white; border-radius: 16px; border: 1px solid #cbd5e1; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        .college-header { border-bottom: 3px double #0f172a; padding: 30px; text-align: center; }
+        .grade-badge { font-size: 1.1rem; font-weight: 700; padding: 4px 12px; border-radius: 6px; }
+        .sgpa-display { font-size: 2.5rem; font-weight: 800; color: #0284c7; }
+        @media print {
+            .no-print { display: none !important; }
+            .report-card { border: none; box-shadow: none; margin: 0; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mb-5">
+        <div class="report-card p-4 p-md-5">
+
+            <!-- College Header -->
+            <div class="college-header mb-4">
+                <span class="text-uppercase small fw-bold text-muted">Bansilal Ramnath Agarwal Charitable Trust's</span>
+                <h3 class="fw-bold mb-1">VISHWAKARMA INSTITUTE OF TECHNOLOGY, PUNE</h3>
+                <p class="text-muted small mb-1">(An Autonomous Institute affiliated to Savitribai Phule Pune University)</p>
+                <h5 class="fw-bold text-primary mt-2">SEMESTER GRADE PERFORMANCE STATEMENT</h5>
+            </div>
+
+            <!-- Student Demographics -->
+            <div class="row g-3 mb-4 p-3 bg-light rounded-3 border">
+                <div class="col-sm-6 col-md-3">
+                    <small class="text-muted text-uppercase fw-semibold">PRN</small>
+                    <div class="fw-bold fs-6" th:text="${res.prn}">12210892</div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <small class="text-muted text-uppercase fw-semibold">Student Name</small>
+                    <div class="fw-bold fs-6" th:text="${res.studentName}">Shivam Bhadane</div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <small class="text-muted text-uppercase fw-semibold">Branch</small>
+                    <div class="fw-bold fs-6" th:text="${res.branch}">Computer Engineering</div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <small class="text-muted text-uppercase fw-semibold">Semester</small>
+                    <div class="fw-bold fs-6" th:text="${res.semester}">Semester IV</div>
+                </div>
+            </div>
+
+            <!-- 4 Subjects Marks Table -->
+            <h6 class="fw-bold text-uppercase text-secondary mb-3">Courses &amp; Continuous Performance Evaluation</h6>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Code</th>
+                            <th>Course Title</th>
+                            <th class="text-center">MSE (30%)</th>
+                            <th class="text-center">ESE (70%)</th>
+                            <th class="text-center">Final (100)</th>
+                            <th class="text-center">Grade</th>
+                            <th class="text-center">Grade Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">CS3111</td>
+                            <td>Web Technologies</td>
+                            <td class="text-center" th:text="${res.sub1Mse}">85</td>
+                            <td class="text-center" th:text="${res.sub1Ese}">90</td>
+                            <td class="text-center fw-bold text-primary" th:text="${res.sub1Total}">88.5</td>
+                            <td class="text-center"><span class="badge bg-success-subtle text-success grade-badge" th:text="${res.sub1Grade}">O</span></td>
+                            <td class="text-center fw-bold" th:text="${res.sub1GradePoints}">10</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">CS3112</td>
+                            <td>Operating Systems</td>
+                            <td class="text-center" th:text="${res.sub2Mse}">80</td>
+                            <td class="text-center" th:text="${res.sub2Ese}">85</td>
+                            <td class="text-center fw-bold text-primary" th:text="${res.sub2Total}">83.5</td>
+                            <td class="text-center"><span class="badge bg-success-subtle text-success grade-badge" th:text="${res.sub2Grade}">A+</span></td>
+                            <td class="text-center fw-bold" th:text="${res.sub2GradePoints}">9</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">CS3113</td>
+                            <td>Computer Networks</td>
+                            <td class="text-center" th:text="${res.sub3Mse}">75</td>
+                            <td class="text-center" th:text="${res.sub3Ese}">82</td>
+                            <td class="text-center fw-bold text-primary" th:text="${res.sub3Total}">79.9</td>
+                            <td class="text-center"><span class="badge bg-primary-subtle text-primary grade-badge" th:text="${res.sub3Grade}">A</span></td>
+                            <td class="text-center fw-bold" th:text="${res.sub3GradePoints}">8</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">CS3114</td>
+                            <td>Database Management Systems</td>
+                            <td class="text-center" th:text="${res.sub4Mse}">88</td>
+                            <td class="text-center" th:text="${res.sub4Ese}">89</td>
+                            <td class="text-center fw-bold text-primary" th:text="${res.sub4Total}">88.7</td>
+                            <td class="text-center"><span class="badge bg-success-subtle text-success grade-badge" th:text="${res.sub4Grade}">O</span></td>
+                            <td class="text-center fw-bold" th:text="${res.sub4GradePoints}">10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Summary KPI Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-3 border text-center">
+                        <small class="text-muted text-uppercase fw-bold">Aggregate Marks</small>
+                        <h4 class="fw-bold mb-0 text-dark"><span th:text="${res.grandTotal}">340.6</span> / 400</h4>
+                        <small class="text-muted">Percentage: <strong th:text="${res.percentage} + '%'">85.15%</strong></small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-3 border text-center">
+                        <small class="text-muted text-uppercase fw-bold">Semester GPA (SGPA)</small>
+                        <div class="sgpa-display" th:text="${res.sgpa}">9.25</div>
+                        <small class="text-muted">Scale: 10.00</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-3 border text-center">
+                        <small class="text-muted text-uppercase fw-bold">Result Status</small>
+                        <h3 class="fw-bold mt-2" th:classappend="${res.overallStatus == 'PASS' ? 'text-success' : 'text-danger'}" th:text="${res.overallStatus}">PASS</h3>
+                        <small class="text-muted">Academic Standing: Regular</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer & Actions -->
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top no-print">
+                <a th:href="@{/}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Form
+                </a>
+                <div class="d-flex gap-2">
+                    <a th:href="@{/records}" class="btn btn-outline-primary">
+                        <i class="bi bi-list-ul me-1"></i> View All
+                    </a>
+                    <button onclick="window.print()" class="btn btn-primary px-4 fw-bold shadow-sm">
+                        <i class="bi bi-printer me-1"></i> Print / Save PDF
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
